@@ -237,9 +237,11 @@ src/gmgn_bot/
   client.py             Client Discord dan event handler
   logging_setup.py      Konfigurasi logging
 docs/
+  SOURCES.md             Referensi teknis dan lisensi
   logo.svg
   hero.id.svg / hero.en.svg
   architecture.id.svg / architecture.en.svg
+  security.id.svg / security.en.svg
   social-preview.svg
   screenshots/
     railway.svg · menu.svg · set.svg · time.svg · list.svg · result.svg
@@ -248,6 +250,10 @@ docs/
 pyproject.toml          Konfigurasi Ruff dan pytest
 requirements.txt        Dependensi runtime
 requirements-dev.txt    Dependensi pengembangan
+CONTRIBUTING.md          Panduan kontribusi
+SECURITY.md              Panduan keamanan
+scripts/check_docs.py    Pemeriksaan tautan dan SVG
+.github/workflows/      Quality checks otomatis
 Dockerfile              Container untuk Docker/Railway
 Procfile                Perintah worker
 ```
