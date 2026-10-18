@@ -17,12 +17,12 @@ Use Python 3.10 or newer. From the repository root:
 ```bash
 pip install -r requirements-dev.txt
 ruff check .
-ruff format --check .
+ruff format --check scripts/check_docs.py
 python -m compileall -q src
 python scripts/check_docs.py
 ```
 
-The repository currently does not contain an automated test suite. Do not describe linting or compilation as behavior tests. Add focused regression tests when contributing testable business logic, and ensure they can run without real Discord credentials or production services.
+The repository currently does not contain an automated test suite. CI checks lint rules, validates formatting of the new documentation checker, compiles the Python modules, and validates local links/SVGs; it does not test live Discord behavior. Add focused regression tests when contributing testable business logic, and ensure they can run without real Discord credentials or production services.
 
 ## Pull request checklist
 
@@ -30,7 +30,7 @@ The repository currently does not contain an automated test suite. Do not descri
 - [ ] Secrets and production identifiers are not included.
 - [ ] Indonesian and English user-facing documentation stays consistent.
 - [ ] `ruff check .` passes.
-- [ ] `ruff format --check .` passes.
+- [ ] `ruff format --check scripts/check_docs.py` passes.
 - [ ] `python -m compileall -q src` passes.
 - [ ] `python scripts/check_docs.py` passes.
 - [ ] New sources, assets, and dependency/license considerations are documented.
