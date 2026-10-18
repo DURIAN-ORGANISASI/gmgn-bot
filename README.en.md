@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/logo.svg" alt="GM/GN Bot" width="96" height="96">
+<img src="docs/logo.svg" alt="GM/GN Bot" width="88" height="88">
 
 # GM/GN Bot
 
@@ -31,6 +31,8 @@
 </div>
 
 ---
+
+![GM/GN Bot workflow overview](docs/screenshots/time.svg)
 
 ## Try it now
 
@@ -78,27 +80,27 @@ That's it: the bot sends `gm` and `gn` to the target channels at the configured 
 
 **1. Deploy and set environment variables.** Follow [Deploy to Railway](#deploy-to-railway). Once running, the bot posts its status in the monitor channel.
 
-![Environment variables on Railway](docs/screenshots/en/railway.svg)
+![Environment variables on Railway](docs/screenshots/railway.svg)
 
 **2. List the commands** with `!menu` in the monitor channel.
 
-![Help menu](docs/screenshots/en/menu.svg)
+![Help menu](docs/screenshots/menu.svg)
 
 **3. Add target channels** with `!set` followed by one or more channel IDs, separated by spaces.
 
-![Set targets](docs/screenshots/en/set.svg)
+![Set targets](docs/screenshots/set.svg)
 
 **4. Set the send times** with `!time`. GM and GN times go in a single command.
 
-![Set schedule](docs/screenshots/en/time.svg)
+![Set schedule](docs/screenshots/time.svg)
 
 **5. Check the configuration** with `!list` to see the GM and GN times, the target count, and the list of active target IDs.
 
-![Configuration list](docs/screenshots/en/list.svg)
+![Configuration list](docs/screenshots/list.svg)
 
 **6. The bot sends messages** to the target channels at the configured times.
 
-![Sent messages](docs/screenshots/en/result.svg)
+![Sent messages](docs/screenshots/result.svg)
 
 **7. Remove a target** any time with `!stop 1234567890`.
 
@@ -137,7 +139,9 @@ A full example is in `.env.example`.
 
 Targets and schedule are stored in `/data/config.json`. Make sure `/data` is a **Railway Volume** so the file survives container rebuilds.
 
-## Privacy
+## Privacy and security
+
+![Token security and Discord policy](docs/security.svg)
 
 - The token is stored **only** in Railway environment variables. Never commit a token; `.env.example` only contains placeholders.
 - The bot exposes no web service, uses no database, and has no analytics. The only stored data is `config.json`, containing target channel IDs and the schedule.
@@ -219,7 +223,7 @@ src/gmgn_bot/
   client.py             Discord client setup and thin event handlers
   logging_setup.py      Logging configuration
 tests/                  Behavior tests (pytest)
-docs/                   Logo and screenshots for the README
+docs/                   Logo and documentation illustrations
 .env.example            Example environment variables (no real token)
 pyproject.toml          Ruff and pytest configuration
 requirements.txt        Runtime dependencies (pinned versions)
