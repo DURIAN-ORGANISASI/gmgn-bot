@@ -126,10 +126,14 @@ async def _cmd_time(
     gm_h, gm_m, gn_h, gn_m = (int(x) for x in match.groups())
 
     errors: list[str] = []
-    if not 0 <= gm_h <= 23: errors.append(f"Jam GM harus 0–23, dapat: {gm_h}")
-    if not 0 <= gm_m <= 59: errors.append(f"Menit GM harus 0–59, dapat: {gm_m}")
-    if not 0 <= gn_h <= 23: errors.append(f"Jam GN harus 0–23, dapat: {gn_h}")
-    if not 0 <= gn_m <= 59: errors.append(f"Menit GN harus 0–59, dapat: {gn_m}")
+    if not 0 <= gm_h <= 23:
+        errors.append(f"Jam GM harus 0–23, dapat: {gm_h}")
+    if not 0 <= gm_m <= 59:
+        errors.append(f"Menit GM harus 0–59, dapat: {gm_m}")
+    if not 0 <= gn_h <= 23:
+        errors.append(f"Jam GN harus 0–23, dapat: {gn_h}")
+    if not 0 <= gn_m <= 59:
+        errors.append(f"Menit GN harus 0–59, dapat: {gn_m}")
 
     if errors:
         await send(message.channel, msg_error("\n".join(errors)))
@@ -231,7 +235,11 @@ async def _cmd_test(
             ch = client.get_channel(channel_id) or await client.fetch_channel(channel_id)
             if hasattr(ch, "send"):
                 msg = pick_gm() if kind == "gm" else pick_gn()
-                content = msg_gm(msg.text, msg.rarity) if kind == "gm" else msg_gn(msg.text, msg.rarity)
+                content = (
+                    msg_gm(msg.text, msg.rarity)
+                    if kind == "gm"
+                    else msg_gn(msg.text, msg.rarity)
+                )
                 await send(ch, content)
                 sent += 1
             else:
