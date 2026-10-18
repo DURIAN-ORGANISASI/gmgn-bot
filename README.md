@@ -212,21 +212,27 @@ docker run --env-file .env -v gmgn-data:/data gmgn-bot
 src/gmgn_bot/
   __init__.py           Ekspor publik paket
   __main__.py           Titik masuk: python -m gmgn_bot
-  settings.py           Baca dan validasi env var (satu tempat)
+  settings.py           Baca dan validasi env var
   storage.py            Baca/tulis config.json
-  messages.py           Kumpulan pesan + pemilihan rarity
-  scheduler.py          Logika jadwal dan pengiriman berkala
-  commands.py           Parser dan handler !menu/!set/!time/!list/!stop/!test
-  client.py             Pembuatan client Discord dan event handler tipis
+  messages.py           Pool pesan + pemilihan berbobot
+  scheduler.py          Jadwal dan pengiriman berkala
+  commands.py           Handler perintah !menu/!set/!time/!list/!stop/!test
+  client.py             Client Discord dan event handler
   logging_setup.py      Konfigurasi logging
-tests/                  Tes perilaku (pytest)
-docs/                   Logo dan ilustrasi dokumentasi
-.env.example            Contoh variabel lingkungan (tanpa token asli)
-pyproject.toml          Konfigurasi ruff dan pytest
-requirements.txt        Dependensi runtime (versi disematkan)
-requirements-dev.txt    Dependensi development (pytest, ruff)
+docs/
+  logo.svg
+  hero.id.svg / hero.en.svg
+  architecture.id.svg / architecture.en.svg
+  social-preview.svg
+  screenshots/
+    railway.svg · menu.svg · set.svg · time.svg · list.svg · result.svg
+    en/                 Ilustrasi berlabel Inggris
+.env.example            Template variabel tanpa credential asli
+pyproject.toml          Konfigurasi Ruff dan pytest
+requirements.txt        Dependensi runtime
+requirements-dev.txt    Dependensi pengembangan
 Dockerfile              Container untuk Docker/Railway
-Procfile                Perintah eksekusi worker
+Procfile                Perintah worker
 ```
 
 ### Batasan yang diketahui

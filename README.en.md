@@ -215,20 +215,26 @@ docker run --env-file .env -v gmgn-data:/data gmgn-bot
 src/gmgn_bot/
   __init__.py           Public package exports
   __main__.py           Entry point: python -m gmgn_bot
-  settings.py           Read and validate env vars (single place)
+  settings.py           Read and validate environment variables
   storage.py            Read/write config.json
-  messages.py           Message pool + rarity selection
-  scheduler.py          Schedule and periodic sending logic
-  commands.py           Parser and handlers for !menu/!set/!time/!list/!stop/!test
-  client.py             Discord client setup and thin event handlers
+  messages.py           Message pool + weighted selection
+  scheduler.py          Scheduling and periodic delivery
+  commands.py           Handlers for !menu/!set/!time/!list/!stop/!test
+  client.py             Discord client and event handlers
   logging_setup.py      Logging configuration
-tests/                  Behavior tests (pytest)
-docs/                   Logo and documentation illustrations
-.env.example            Example environment variables (no real token)
+docs/
+  logo.svg
+  hero.id.svg / hero.en.svg
+  architecture.id.svg / architecture.en.svg
+  social-preview.svg
+  screenshots/
+    railway.svg · menu.svg · set.svg · time.svg · list.svg · result.svg
+    en/                 English-labeled illustrations
+.env.example            Environment template without real credentials
 pyproject.toml          Ruff and pytest configuration
-requirements.txt        Runtime dependencies (pinned versions)
-requirements-dev.txt    Development dependencies (pytest, ruff)
-Dockerfile              Container for Docker/Railway
+requirements.txt        Runtime dependencies
+requirements-dev.txt    Development dependencies
+Dockerfile              Docker/Railway container
 Procfile                Worker start command
 ```
 
