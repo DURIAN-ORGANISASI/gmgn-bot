@@ -32,7 +32,7 @@
 
 ---
 
-![Ringkasan alur kerja GM/GN Bot](docs/screenshots/time.svg)
+![Ringkasan visual GM/GN Bot](docs/hero.svg)
 
 ## Coba sekarang
 
