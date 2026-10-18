@@ -9,9 +9,9 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-MARKDOWN_LINK_RE = re.compile(r"!?\\[[^\\]]*\\]\\(\\s*(?:<([^>]+)>|([^\\s)]+))")
-HTML_SRC_RE = re.compile(r"""<(?:img|source)\\b[^>]*?\\bsrc=["']([^"']+)["']""", re.IGNORECASE)
-FENCED_BLOCK_RE = re.compile(r"(?ms)^[ \\t]{0,3}(`{3,}|~{3,})[^\\n]*\\n.*?^[ \\t]{0,3}\\1[ \\t]*$")
+MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(\s*(?:<([^>]+)>|([^\s)]+))")
+HTML_SRC_RE = re.compile(r"""<(?:img|source)\b[^>]*?\bsrc=["']([^"']+)["']""", re.IGNORECASE)
+FENCED_BLOCK_RE = re.compile(r"(?ms)^[ \t]{0,3}(`{3,}|~{3,})[^\n]*\n.*?^[ \t]{0,3}\1[ \t]*$")
 SVG_NS = "{http://www.w3.org/2000/svg}"
 
 
@@ -69,6 +69,8 @@ def check_svg_files() -> tuple[int, list[str]]:
             if not (root.get("viewBox") or (root.get("width") and root.get("height"))):
                 errors.append(f"{svg_path.relative_to(ROOT)}: SVG has no viewBox or explicit dimensions")
 
+            # Valid XML can still render as a blank image. Logo artwork is text-light;
+            # other documentation graphics should contain readable labels.
             if svg_path.name != "logo.svg":
                 text_count = len(root.findall(f".//{SVG_NS}text"))
                 if text_count < 3:
