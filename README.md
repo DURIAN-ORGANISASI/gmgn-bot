@@ -148,6 +148,8 @@ Target dan jadwal disimpan di `/data/config.json`. Pastikan folder `/data` beras
 
 ## Privasi
 
+![Batas privasi dan keamanan](docs/security.id.svg)
+
 - Token **hanya** disimpan di environment variable Railway. Jangan pernah meng-commit token; `.env.example` hanya berisi contoh tanpa token asli.
 - Bot tidak menyediakan layanan web, tidak memakai database, dan tidak memakai analytics. Satu-satunya data yang disimpan adalah `config.json` berisi ID channel target dan jadwal.
 - Token setara dengan password akun. Kalau bocor, **ganti password akun** untuk me-reset token.

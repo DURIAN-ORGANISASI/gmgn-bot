@@ -149,6 +149,8 @@ Targets and schedule are stored in `/data/config.json`. Make sure `/data` is a *
 
 ## Privacy
 
+![Privacy and security boundaries](docs/security.en.svg)
+
 - The token is stored **only** in Railway environment variables. Never commit a token; `.env.example` only contains placeholders.
 - The bot exposes no web service, uses no database, and has no analytics. The only stored data is `config.json`, containing target channel IDs and the schedule.
 - A token is equivalent to your account password. If it leaks, **change the account password** to reset the token.
