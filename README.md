@@ -189,14 +189,16 @@ set TIMEZONE=Asia/Jakarta
 python -m gmgn_bot
 ```
 
-### Lint dan format
+### Pemeriksaan kualitas kode
 
 Jalankan pemeriksaan gaya kode dari root repositori:
 
 ```
 pip install -r requirements-dev.txt
 ruff check .
-ruff format --check .
+ruff format --check scripts/check_docs.py
+python -m compileall -q src
+python scripts/check_docs.py
 ```
 
 Dependensi pytest tersedia untuk kontributor yang menambahkan tes regresi.
