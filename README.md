@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/logo.svg" alt="GM/GN Bot" width="96" height="96">
+<img src="docs/logo.svg" alt="GM/GN Bot" width="88" height="88">
 
 # GM/GN Bot
 
@@ -31,6 +31,8 @@
 </div>
 
 ---
+
+![Ringkasan alur kerja GM/GN Bot](docs/screenshots/time.svg)
 
 ## Coba sekarang
 
@@ -134,7 +136,9 @@ Contoh lengkap ada di `.env.example`.
 
 Target dan jadwal disimpan di `/data/config.json`. Pastikan folder `/data` berasal dari **Railway Volume** agar berkas ini bertahan saat container dibuat ulang.
 
-## Privasi
+## Privasi dan keamanan
+
+![Keamanan token dan kebijakan Discord](docs/security.svg)
 
 - Token **hanya** disimpan di environment variable Railway. Jangan pernah meng-commit token; `.env.example` hanya berisi contoh tanpa token asli.
 - Bot tidak menyediakan layanan web, tidak memakai database, dan tidak memakai analytics. Satu-satunya data yang disimpan adalah `config.json` berisi ID channel target dan jadwal.
@@ -216,7 +220,7 @@ src/gmgn_bot/
   client.py             Pembuatan client Discord dan event handler tipis
   logging_setup.py      Konfigurasi logging
 tests/                  Tes perilaku (pytest)
-docs/                   Logo dan screenshot untuk README
+docs/                   Logo dan ilustrasi dokumentasi
 .env.example            Contoh variabel lingkungan (tanpa token asli)
 pyproject.toml          Konfigurasi ruff dan pytest
 requirements.txt        Dependensi runtime (versi disematkan)
