@@ -15,7 +15,6 @@ from datetime import datetime
 
 import discord
 
-
 # ── Deteksi mode ─────────────────────────────────────────────────────────────
 
 def is_selfbot() -> bool:
