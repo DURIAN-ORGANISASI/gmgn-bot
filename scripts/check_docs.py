@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Check Markdown file references and ensure documentation SVG assets are valid and non-empty."""
+
 from __future__ import annotations
 
 import re
