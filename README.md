@@ -1,38 +1,42 @@
 <div align="center">
 
-<img src="docs/logo.svg" alt="GM/GN Bot" width="88" height="88">
+<img src="docs/logo.svg" alt="GM/GN Bot" width="84" height="84">
 
 # GM/GN Bot
 
 <p>
-  <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white"></a>
-  <a href="https://discord.com/"><img alt="Discord" src="https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white"></a>
-  <a href="Dockerfile"><img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white"></a>
-  <a href="https://railway.app/"><img alt="Railway" src="https://img.shields.io/badge/Railway-0B0D0E?style=flat&logo=railway&logoColor=white"></a>
-  <a href="https://docs.pytest.org/"><img alt="pytest" src="https://img.shields.io/badge/pytest-0A9EDC?style=flat&logo=pytest&logoColor=white"></a>
-  <a href="https://docs.astral.sh/ruff/"><img alt="Ruff" src="https://img.shields.io/badge/Ruff-D7FF64?style=flat&logo=ruff&logoColor=black"></a>
-  <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/License-MIT-yellow?style=flat"></a>
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/Discord-Automation-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord automation">
+  <img src="https://img.shields.io/badge/Deploy-Railway-0B0D0E?style=flat&logo=railway&logoColor=white" alt="Railway">
+  <img src="https://img.shields.io/badge/Container-Docker-2496ED?style=flat&logo=docker&logoColor=white" alt="Docker">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2DAD87?style=flat" alt="MIT License"></a>
 </p>
 
-<p><a href="README.md">Bahasa Indonesia</a> · <a href="README.en.md">English</a></p>
+<p><a href="README.md">🇮🇩 Bahasa Indonesia</a> · <a href="README.en.md">🇬🇧 English</a></p>
 
-<p><b>Kirim GM &amp; GN otomatis ke banyak channel Discord.</b> Pesan dipilih dengan sistem rarity supaya natural, jadwal dan target diatur lewat perintah teks di satu channel pemantau. Berjalan sebagai worker di Railway, tanpa dashboard dan tanpa database.</p>
+<p><strong>Pesan Good Morning &amp; Good Night terjadwal untuk banyak channel Discord.</strong><br>
+Kelola target dan jam kirim lewat perintah chat, dengan konfigurasi persisten di Railway Volume.</p>
 
 <p>
-  <a href="#coba-sekarang">Coba sekarang</a> ·
+  <a href="#coba-sekarang">Mulai cepat</a> ·
   <a href="#fitur">Fitur</a> ·
-  <a href="#cara-pakai">Cara pakai</a> ·
-  <a href="#format-input">Format input</a> ·
-  <a href="#privasi">Privasi</a> ·
-  <a href="#pengembangan">Pengembangan</a> ·
-  <a href="#kontribusi">Kontribusi</a>
+  <a href="#arsitektur-singkat">Arsitektur</a> ·
+  <a href="#cara-pakai">Panduan penggunaan</a> ·
+  <a href="#format-input">Perintah</a> ·
+  <a href="#privasi">Privasi &amp; keamanan</a> ·
+  <a href="#pengembangan">Pengembangan</a>
 </p>
 
 </div>
 
 ---
 
-![Ringkasan alur kerja GM/GN Bot](docs/screenshots/time.svg)
+![Ilustrasi GM/GN Bot](docs/hero.id.svg)
+
+<p align="center"><sub>Ilustrasi SVG untuk dokumentasi — bukan tangkapan layar langsung dari Discord atau Railway.</sub></p>
+
+> [!WARNING]
+> **Penting — risiko Ketentuan Layanan Discord.** Repositori ini memakai token akun pengguna melalui `discord.py-self` (self-bot). Otomatisasi akun pengguna melanggar Ketentuan Layanan Discord dan dapat menyebabkan pembatasan atau pemblokiran akun. Jangan gunakan akun utama dan jangan pernah membagikan token. Untuk pendekatan berbasis bot resmi, lihat [GM/GN n8n Agent](https://github.com/DURIAN-ORGANISASI/gmgn-n8n-agent); kode pada repositori ini sendiri belum menggunakan API bot resmi.
 
 ## Coba sekarang
 
@@ -50,15 +54,13 @@ Tiga langkah dari nol sampai bot aktif:
 
 Selesai: bot akan mengirim `gm` dan `gn` ke channel target sesuai jam yang diatur. Penjelasan lengkap ada di [Cara pakai](#cara-pakai).
 
-> **Peringatan:** bot ini memakai akun pengguna (self-bot) yang melanggar Ketentuan Layanan Discord. Baca bagian [Privasi](#privasi) dan [Kontribusi](#kontribusi) sebelum memakainya.
-
 ## Fitur
 
 **Pengiriman pesan**
 
-- **Sistem rarity pesan**: pesan singkat (`gm` / `gn`) muncul paling sering, sedangkan variasi kalimat lain muncul acak sebagai selingan sehingga tidak terlihat seperti robot.
+- **Variasi pesan berbobot**: pesan singkat (`gm` / `gn`) lebih sering dipilih, sementara variasi kalimat muncul sebagai selingan agar pesan tidak terlalu repetitif.
 - **Multi-channel**: satu bot untuk banyak channel target sekaligus.
-- **Jeda acak antar pengiriman** (*human-like delay*) agar tidak terlihat seperti spam.
+- **Jeda antar-pengiriman yang dapat bervariasi** untuk menyebarkan pengiriman dan mengurangi lonjakan permintaan; tetap patuhi batas dan aturan setiap server.
 - **Jadwal GM dan GN terpisah**, dengan zona waktu yang bisa diatur lewat `TIMEZONE` (mis. `Asia/Jakarta`, `Asia/Makassar`).
 
 **Kontrol dan keamanan operasional**
@@ -70,12 +72,20 @@ Selesai: bot akan mengirim `gm` dan `gn` ke channel target sesuai jam yang diatu
 **Kualitas kode**
 
 - Kode dipecah per modul (settings, storage, messages, scheduler, commands, client).
-- Tes perilaku dengan **pytest**, lint dan format dengan **Ruff**.
+- Pemeriksaan gaya kode dengan **Ruff**; dependensi pytest tersedia untuk tes yang ditambahkan kontributor.
 - Siap produksi dengan **Dockerfile** dan **Procfile**.
+
+## Arsitektur singkat
+
+![Alur kerja GM/GN Bot](docs/architecture.id.svg)
+
+Bot menerima perintah hanya dari channel pemantau, menyimpan target dan jadwal di `/data/config.json`, lalu mengirim GM/GN sesuai zona waktu. Railway Volume diperlukan agar konfigurasi bertahan saat container dibuat ulang.
 
 ## Cara pakai
 
 **1. Deploy dan isi environment variable.** Ikuti [Deploy ke Railway](#deploy-ke-railway). Setelah bot aktif, ia mengirim status di channel pemantau.
+
+Gambar langkah di bawah adalah mockup dokumentasi dengan nilai contoh, bukan tangkapan layar langsung dari akunmu.
 
 ![Environment variable di Railway](docs/screenshots/railway.svg)
 
@@ -136,9 +146,9 @@ Contoh lengkap ada di `.env.example`.
 
 Target dan jadwal disimpan di `/data/config.json`. Pastikan folder `/data` berasal dari **Railway Volume** agar berkas ini bertahan saat container dibuat ulang.
 
-## Privasi dan keamanan
+## Privasi
 
-![Keamanan token dan kebijakan Discord](docs/security.svg)
+![Batas privasi dan keamanan](docs/security.id.svg)
 
 - Token **hanya** disimpan di environment variable Railway. Jangan pernah meng-commit token; `.env.example` hanya berisi contoh tanpa token asli.
 - Bot tidak menyediakan layanan web, tidak memakai database, dan tidak memakai analytics. Satu-satunya data yang disimpan adalah `config.json` berisi ID channel target dan jadwal.
@@ -175,14 +185,17 @@ set TIMEZONE=Asia/Jakarta
 python -m gmgn_bot
 ```
 
-### Tes dan lint
+### Lint dan format
+
+Jalankan pemeriksaan gaya kode dari root repositori:
 
 ```
 pip install -r requirements-dev.txt
-pytest
 ruff check .
 ruff format --check .
 ```
+
+Dependensi pytest tersedia untuk kontributor yang menambahkan tes regresi.
 
 ### Menjalankan dengan Docker
 
@@ -212,21 +225,27 @@ docker run --env-file .env -v gmgn-data:/data gmgn-bot
 src/gmgn_bot/
   __init__.py           Ekspor publik paket
   __main__.py           Titik masuk: python -m gmgn_bot
-  settings.py           Baca dan validasi env var (satu tempat)
+  settings.py           Baca dan validasi env var
   storage.py            Baca/tulis config.json
-  messages.py           Kumpulan pesan + pemilihan rarity
-  scheduler.py          Logika jadwal dan pengiriman berkala
-  commands.py           Parser dan handler !menu/!set/!time/!list/!stop/!test
-  client.py             Pembuatan client Discord dan event handler tipis
+  messages.py           Pool pesan + pemilihan berbobot
+  scheduler.py          Jadwal dan pengiriman berkala
+  commands.py           Handler perintah !menu/!set/!time/!list/!stop/!test
+  client.py             Client Discord dan event handler
   logging_setup.py      Konfigurasi logging
-tests/                  Tes perilaku (pytest)
-docs/                   Logo dan ilustrasi dokumentasi
-.env.example            Contoh variabel lingkungan (tanpa token asli)
-pyproject.toml          Konfigurasi ruff dan pytest
-requirements.txt        Dependensi runtime (versi disematkan)
-requirements-dev.txt    Dependensi development (pytest, ruff)
+docs/
+  logo.svg
+  hero.id.svg / hero.en.svg
+  architecture.id.svg / architecture.en.svg
+  social-preview.svg
+  screenshots/
+    railway.svg · menu.svg · set.svg · time.svg · list.svg · result.svg
+    en/                 Ilustrasi berlabel Inggris
+.env.example            Template variabel tanpa credential asli
+pyproject.toml          Konfigurasi Ruff dan pytest
+requirements.txt        Dependensi runtime
+requirements-dev.txt    Dependensi pengembangan
 Dockerfile              Container untuk Docker/Railway
-Procfile                Perintah eksekusi worker
+Procfile                Perintah worker
 ```
 
 ### Batasan yang diketahui
