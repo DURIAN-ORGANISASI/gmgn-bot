@@ -46,11 +46,17 @@ def check_local_references() -> tuple[int, list[str]]:
                 continue
 
             raw_path = unquote(parsed.path)
-            candidate = (ROOT / raw_path.lstrip("/")) if raw_path.startswith("/") else (markdown_path.parent / raw_path)
+            candidate = (
+                (ROOT / raw_path.lstrip("/"))
+                if raw_path.startswith("/")
+                else (markdown_path.parent / raw_path)
+            )
             candidate = candidate.resolve()
             checked += 1
             if not candidate.is_relative_to(ROOT):
-                errors.append(f"{markdown_path.relative_to(ROOT)}: {kind} escapes repository: {target}")
+                errors.append(
+                    f"{markdown_path.relative_to(ROOT)}: {kind} escapes repository: {target}"
+                )
             elif not candidate.exists():
                 errors.append(f"{markdown_path.relative_to(ROOT)}: broken {kind}: {target}")
     return checked, errors
@@ -67,7 +73,9 @@ def check_svg_files() -> tuple[int, list[str]]:
                 continue
 
             if not (root.get("viewBox") or (root.get("width") and root.get("height"))):
-                errors.append(f"{svg_path.relative_to(ROOT)}: SVG has no viewBox or explicit dimensions")
+                errors.append(
+                    f"{svg_path.relative_to(ROOT)}: SVG has no viewBox or explicit dimensions"
+                )
 
             # Valid XML can still render as a blank image. Logo artwork is text-light;
             # other documentation graphics should contain readable labels.
