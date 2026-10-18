@@ -190,14 +190,16 @@ set TIMEZONE=Asia/Jakarta
 python -m gmgn_bot
 ```
 
-### Lint and formatting
+### Code quality checks
 
 Run style checks from the repository root:
 
 ```
 pip install -r requirements-dev.txt
 ruff check .
-ruff format --check .
+ruff format --check scripts/check_docs.py
+python -m compileall -q src
+python scripts/check_docs.py
 ```
 
 Pytest is included for contributors who add regression tests.
