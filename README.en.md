@@ -32,7 +32,7 @@
 
 ---
 
-![GM/GN Bot workflow overview](docs/screenshots/time.svg)
+![GM/GN Bot workflow overview](docs/hero.svg)
 
 ## Try it now
 
