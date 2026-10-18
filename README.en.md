@@ -238,9 +238,11 @@ src/gmgn_bot/
   client.py             Discord client and event handlers
   logging_setup.py      Logging configuration
 docs/
+  SOURCES.md             Technical references and licenses
   logo.svg
   hero.id.svg / hero.en.svg
   architecture.id.svg / architecture.en.svg
+  security.id.svg / security.en.svg
   social-preview.svg
   screenshots/
     railway.svg · menu.svg · set.svg · time.svg · list.svg · result.svg
@@ -249,6 +251,10 @@ docs/
 pyproject.toml          Ruff and pytest configuration
 requirements.txt        Runtime dependencies
 requirements-dev.txt    Development dependencies
+CONTRIBUTING.md          Contribution guide
+SECURITY.md              Security policy
+scripts/check_docs.py    Markdown and SVG validation
+.github/workflows/      Automated quality checks
 Dockerfile              Docker/Railway container
 Procfile                Worker start command
 ```
