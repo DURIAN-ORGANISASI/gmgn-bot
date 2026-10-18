@@ -15,7 +15,6 @@ from datetime import datetime
 
 import discord
 
-
 # ── Deteksi mode ─────────────────────────────────────────────────────────────
 
 def is_selfbot() -> bool:
@@ -118,12 +117,36 @@ def msg_menu() -> str | discord.Embed:
         description="Semua perintah hanya aktif di channel monitor ini.",
         color=COLOR_BLUE,
     )
-    embed.add_field(name="📥  Kelola Target", value="`!set <id1> <id2>`\nTambah channel target.", inline=False)
-    embed.add_field(name="⏰  Atur Jadwal",   value="`!time gm:07.00, gn:19.00`\nAtur jam GM dan GN.",  inline=False)
-    embed.add_field(name="📋  Lihat Config",  value="`!list`\nTampilkan daftar target & jadwal.", inline=False)
-    embed.add_field(name="🗑️  Hapus Target",  value="`!stop <id>`\nHapus channel dari daftar.",      inline=False)
-    embed.add_field(name="🧪  Tes Manual",    value="`!test gm`  atau  `!test gn`\nKirim sekarang ke semua target.", inline=False)
-    embed.add_field(name="❓  Bantuan",       value="`!menu`\nTampilkan menu ini.",                  inline=False)
+    embed.add_field(
+        name="📥  Kelola Target",
+        value="`!set <id1> <id2>`\nTambah channel target.",
+        inline=False,
+    )
+    embed.add_field(
+        name="⏰  Atur Jadwal",
+        value="`!time gm:07.00, gn:19.00`\nAtur jam GM dan GN.",
+        inline=False,
+    )
+    embed.add_field(
+        name="📋  Lihat Config",
+        value="`!list`\nTampilkan daftar target & jadwal.",
+        inline=False,
+    )
+    embed.add_field(
+        name="🗑️  Hapus Target",
+        value="`!stop <id>`\nHapus channel dari daftar.",
+        inline=False,
+    )
+    embed.add_field(
+        name="🧪  Tes Manual",
+        value="`!test gm`  atau  `!test gn`\nKirim sekarang ke semua target.",
+        inline=False,
+    )
+    embed.add_field(
+        name="❓  Bantuan",
+        value="`!menu`\nTampilkan menu ini.",
+        inline=False,
+    )
     return _footer(embed)
 
 

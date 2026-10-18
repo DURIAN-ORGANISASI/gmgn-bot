@@ -5,11 +5,12 @@
 # GM/GN Bot
 
 <p>
-  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3.10+">
-  <img src="https://img.shields.io/badge/Discord-Automation-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord automation">
-  <img src="https://img.shields.io/badge/Deploy-Railway-0B0D0E?style=flat&logo=railway&logoColor=white" alt="Railway">
-  <img src="https://img.shields.io/badge/Container-Docker-2496ED?style=flat&logo=docker&logoColor=white" alt="Docker">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2DAD87?style=flat" alt="MIT License"></a>
+  <a href="https://github.com/DURIAN-ORGANISASI/gmgn-bot/actions/workflows/quality.yml"><img alt="Quality checks" src="https://img.shields.io/github/actions/workflow/status/DURIAN-ORGANISASI/gmgn-bot/quality.yml?branch=main&amp;label=quality%20checks&amp;logo=githubactions&amp;logoColor=white"></a>
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&amp;logo=python&amp;logoColor=white" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/Discord-Automation-5865F2?style=flat&amp;logo=discord&amp;logoColor=white" alt="Discord automation">
+  <img src="https://img.shields.io/badge/Deploy-Railway-0B0D0E?style=flat&amp;logo=railway&amp;logoColor=white" alt="Railway">
+  <img src="https://img.shields.io/badge/Container-Docker-2496ED?style=flat&amp;logo=docker&amp;logoColor=white" alt="Docker">
+  <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/DURIAN-ORGANISASI/gmgn-bot?label=license"></a>
 </p>
 
 <p><a href="README.md">🇮🇩 Bahasa Indonesia</a> · <a href="README.en.md">🇬🇧 English</a></p>
@@ -24,7 +25,10 @@ Kelola target dan jam kirim lewat perintah chat, dengan konfigurasi persisten di
   <a href="#cara-pakai">Panduan penggunaan</a> ·
   <a href="#format-input">Perintah</a> ·
   <a href="#privasi">Privasi &amp; keamanan</a> ·
-  <a href="#pengembangan">Pengembangan</a>
+  <a href="#pengembangan">Pengembangan</a> ·
+  <a href="#sumber-atribusi-dan-lisensi">Sumber &amp; lisensi</a> ·
+  <a href="#kontribusi">Kontribusi</a> ·
+  <a href="#keamanan-proyek">Keamanan</a>
 </p>
 
 </div>
@@ -36,7 +40,7 @@ Kelola target dan jam kirim lewat perintah chat, dengan konfigurasi persisten di
 <p align="center"><sub>Ilustrasi SVG untuk dokumentasi — bukan tangkapan layar langsung dari Discord atau Railway.</sub></p>
 
 > [!WARNING]
-> **Penting — risiko Ketentuan Layanan Discord.** Repositori ini memakai token akun pengguna melalui `discord.py-self` (self-bot). Otomatisasi akun pengguna melanggar Ketentuan Layanan Discord dan dapat menyebabkan pembatasan atau pemblokiran akun. Jangan gunakan akun utama dan jangan pernah membagikan token. Untuk pendekatan berbasis bot resmi, lihat [GM/GN n8n Agent](https://github.com/DURIAN-ORGANISASI/gmgn-n8n-agent); kode pada repositori ini sendiri belum menggunakan API bot resmi.
+> **Peringatan utama — self-bot tidak diizinkan oleh Discord.** Repositori ini memakai token akun pengguna melalui `discord.py-self`, bukan aplikasi bot resmi. Penggunaan ini melanggar Ketentuan Layanan Discord dan berisiko menyebabkan pembatasan atau pemblokiran akun. Bagian deploy di bawah menjelaskan implementasi yang ada, tetapi tidak menjadikannya patuh terhadap kebijakan Discord. Untuk pendekatan yang menggunakan bot resmi, lihat [GM/GN n8n Agent](https://github.com/DURIAN-ORGANISASI/gmgn-n8n-agent). Jangan gunakan akun utama atau membagikan token.
 
 ## Coba sekarang
 
@@ -73,7 +77,7 @@ Selesai: bot akan mengirim `gm` dan `gn` ke channel target sesuai jam yang diatu
 
 - Kode dipecah per modul (settings, storage, messages, scheduler, commands, client).
 - Pemeriksaan gaya kode dengan **Ruff**; dependensi pytest tersedia untuk tes yang ditambahkan kontributor.
-- Siap produksi dengan **Dockerfile** dan **Procfile**.
+- Kemasan deploy tersedia melalui **Dockerfile** dan **Procfile**; ini bukan pernyataan bahwa penggunaan self-bot didukung Discord.
 
 ## Arsitektur singkat
 
@@ -185,14 +189,16 @@ set TIMEZONE=Asia/Jakarta
 python -m gmgn_bot
 ```
 
-### Lint dan format
+### Pemeriksaan kualitas kode
 
 Jalankan pemeriksaan gaya kode dari root repositori:
 
 ```
 pip install -r requirements-dev.txt
 ruff check .
-ruff format --check .
+ruff format --check scripts/check_docs.py
+python -m compileall -q src
+python scripts/check_docs.py
 ```
 
 Dependensi pytest tersedia untuk kontributor yang menambahkan tes regresi.
@@ -233,9 +239,11 @@ src/gmgn_bot/
   client.py             Client Discord dan event handler
   logging_setup.py      Konfigurasi logging
 docs/
+  SOURCES.md             Referensi teknis dan lisensi
   logo.svg
   hero.id.svg / hero.en.svg
   architecture.id.svg / architecture.en.svg
+  security.id.svg / security.en.svg
   social-preview.svg
   screenshots/
     railway.svg · menu.svg · set.svg · time.svg · list.svg · result.svg
@@ -244,6 +252,10 @@ docs/
 pyproject.toml          Konfigurasi Ruff dan pytest
 requirements.txt        Dependensi runtime
 requirements-dev.txt    Dependensi pengembangan
+CONTRIBUTING.md          Panduan kontribusi
+SECURITY.md              Panduan keamanan
+scripts/check_docs.py    Pemeriksaan tautan dan SVG
+.github/workflows/      Quality checks otomatis
 Dockerfile              Container untuk Docker/Railway
 Procfile                Perintah worker
 ```
@@ -254,23 +266,32 @@ Procfile                Perintah worker
 - **Tanpa Volume, konfigurasi hilang** saat container dibuat ulang.
 - **Risiko akun**: pengiriman otomatis lewat akun pengguna bisa memicu pembatasan dari Discord, dan sebagian server melarang pesan otomatis. Patuhi aturan tiap server.
 
+## Sumber, atribusi, dan lisensi
+
+### Referensi teknis
+
+- [Discord Developer Documentation](https://discord.com/developers/docs) untuk konsep aplikasi, bot resmi, event, dan izin.
+- [Discord Terms of Service](https://discord.com/terms) dan [kebijakan akun otomatis/self-bot](https://support.discord.com/hc/en-us/articles/115002192352-Automated-User-Accounts-Self-Bots). Referensi ini penting karena implementasi saat ini memakai token akun pengguna.
+- [Dokumentasi Python](https://docs.python.org/3/), [pytz](https://github.com/stub42/pytz), dan [discord.py-self pada commit yang dipatok](https://github.com/dolfies/discord.py-self/tree/2ba64a9a997e151a9c259984e0a179b1fdf4aff4).
+- [Railway Volumes](https://docs.railway.com/reference/volumes), [Railway Variables](https://docs.railway.com/guides/variables), dan [Docker](https://docs.docker.com/).
+- Daftar sumber, referensi, dan catatan atribusi selengkapnya ada di [`docs/SOURCES.md`](docs/SOURCES.md).
+
+### Atribusi aset dan merek
+
+Ilustrasi SVG di `docs/` adalah mockup dokumentasi, bukan tangkapan layar langsung dari Discord atau Railway. Nama dan merek Discord, Railway, Docker, Python, serta proyek pihak ketiga lainnya dimiliki oleh pemilik masing-masing. GM/GN Bot adalah proyek independen dan tidak didukung atau disponsori oleh Discord Inc.
+
+### Cakupan MIT
+
+Repositori ini menggunakan [MIT License](LICENSE). File `LICENSE` tetap menjadi sumber utama untuk teks lisensi dan pemberitahuan hak cipta. MIT berlaku untuk materi proyek yang dicakup, bukan otomatis untuk dependency pihak ketiga, layanan eksternal, merek dagang, atau persyaratan platform. Lisensi MIT tidak membuat penggunaan self-bot diizinkan oleh Discord.
+
 ## Kontribusi
 
-Kontribusi sangat diterima.
+Kontribusi dipersilakan melalui Issues dan Pull Requests. Ikuti [`CONTRIBUTING.md`](CONTRIBUTING.md), jaga README Indonesia dan Inggris tetap konsisten, dan jangan sertakan token, cookie, ID channel produksi, atau log sensitif. Pemeriksaan otomatis tersedia melalui badge **Quality checks** di bagian atas.
 
-1. **Fork** repo ini dan buat branch baru, mis. `fitur/nama-fitur`.
-2. Pasang dependensi development: `pip install -r requirements-dev.txt`.
-3. Ubah kode di `src/gmgn_bot/`, **tambahkan atau perbarui tes** di `tests/`.
-4. Pastikan semuanya lolos sebelum membuka PR:
+## Keamanan proyek
 
-   ```
-   pytest
-   ruff check .
-   ruff format --check .
-   ```
+Baca [`SECURITY.md`](SECURITY.md) sebelum melaporkan masalah keamanan. Simpan token sebagai rahasia, jangan commit file `.env`, dan jangan membagikan log sebelum menghapus data sensitif. Implementasi saat ini menggunakan self-bot dan berisiko terhadap akun serta kepatuhan platform; untuk penggunaan yang didukung, utamakan bot resmi Discord dengan izin minimum yang diperlukan.
 
-5. Buka **Pull Request** dengan deskripsi singkat: apa yang berubah dan kenapa.
+## Lisensi
 
-Untuk bug atau usulan fitur, buka **Issue** dan sertakan langkah mengulang serta log (tanpa token).
-
-Proyek ini tidak berafiliasi dengan Discord Inc. Dirilis di bawah lisensi [MIT](LICENSE).
+Dirilis di bawah [MIT License](LICENSE). Lisensi pihak ketiga dan ketentuan platform tetap berlaku secara terpisah.
