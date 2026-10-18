@@ -1,38 +1,42 @@
 <div align="center">
 
-<img src="docs/logo.svg" alt="GM/GN Bot" width="88" height="88">
+<img src="docs/logo.svg" alt="GM/GN Bot" width="84" height="84">
 
 # GM/GN Bot
 
 <p>
-  <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white"></a>
-  <a href="https://discord.com/"><img alt="Discord" src="https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white"></a>
-  <a href="Dockerfile"><img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white"></a>
-  <a href="https://railway.app/"><img alt="Railway" src="https://img.shields.io/badge/Railway-0B0D0E?style=flat&logo=railway&logoColor=white"></a>
-  <a href="https://docs.pytest.org/"><img alt="pytest" src="https://img.shields.io/badge/pytest-0A9EDC?style=flat&logo=pytest&logoColor=white"></a>
-  <a href="https://docs.astral.sh/ruff/"><img alt="Ruff" src="https://img.shields.io/badge/Ruff-D7FF64?style=flat&logo=ruff&logoColor=black"></a>
-  <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/License-MIT-yellow?style=flat"></a>
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/Discord-Automation-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord automation">
+  <img src="https://img.shields.io/badge/Deploy-Railway-0B0D0E?style=flat&logo=railway&logoColor=white" alt="Railway">
+  <img src="https://img.shields.io/badge/Container-Docker-2496ED?style=flat&logo=docker&logoColor=white" alt="Docker">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2DAD87?style=flat" alt="MIT License"></a>
 </p>
 
-<p><a href="README.md">Bahasa Indonesia</a> · <a href="README.en.md">English</a></p>
+<p><a href="README.md">🇮🇩 Bahasa Indonesia</a> · <a href="README.en.md">🇬🇧 English</a></p>
 
-<p><b>Automatic GM &amp; GN messages for multiple Discord channels.</b> Messages are picked with a rarity system so they look natural, and the schedule and targets are managed through text commands in a single monitor channel. Runs as a worker on Railway, with no dashboard and no database.</p>
+<p><strong>Scheduled Good Morning &amp; Good Night messages for multiple Discord channels.</strong><br>
+Manage targets and send times through chat commands, with persistent configuration on a Railway Volume.</p>
 
 <p>
-  <a href="#try-it-now">Try it now</a> ·
+  <a href="#try-it-now">Quick start</a> ·
   <a href="#features">Features</a> ·
-  <a href="#usage">Usage</a> ·
-  <a href="#input-format">Input format</a> ·
-  <a href="#privacy">Privacy</a> ·
-  <a href="#development">Development</a> ·
-  <a href="#contributing">Contributing</a>
+  <a href="#architecture-at-a-glance">Architecture</a> ·
+  <a href="#usage">Usage guide</a> ·
+  <a href="#input-format">Commands</a> ·
+  <a href="#privacy">Privacy &amp; security</a> ·
+  <a href="#development">Development</a>
 </p>
 
 </div>
 
 ---
 
-![GM/GN Bot workflow overview](docs/screenshots/time.svg)
+![GM/GN Bot illustration](docs/hero.en.svg)
+
+<p align="center"><sub>SVG illustrations for documentation — not live screenshots from Discord or Railway.</sub></p>
+
+> [!WARNING]
+> **Important — Discord Terms of Service risk.** This repository uses a user-account token through `discord.py-self` (self-bot). Automating a user account violates Discord's Terms of Service and may lead to account restrictions or bans. Do not use your main account or share the token. For an official-bot-based approach, see [GM/GN n8n Agent](https://github.com/DURIAN-ORGANISASI/gmgn-n8n-agent); this repository's code does not itself use the official bot API.
 
 ## Try it now
 
@@ -50,15 +54,13 @@ Three steps from zero to a running bot:
 
 That's it: the bot sends `gm` and `gn` to the target channels at the configured times. Full walkthrough in [Usage](#usage).
 
-> **Warning:** this bot automates a user account (self-bot), which violates Discord's Terms of Service. Read [Privacy](#privacy) and [Contributing](#contributing) before using it.
-
 ## Features
 
 **Message delivery**
 
-- **Message rarity system**: short messages (`gm` / `gn`) appear most often, while other phrasings show up randomly as variety, so it doesn't look robotic.
+- **Weighted message variety**: short messages (`gm` / `gn`) are selected more often, with alternative phrasings to reduce repetition.
 - **Multi-channel**: one bot for many target channels at once.
-- **Random delay between sends** (*human-like delay*) to avoid looking like spam.
+- **Variable delay between sends** to spread delivery and reduce request bursts; always respect each server's rules and platform limits.
 - **Separate GM and GN schedules**, with a configurable timezone via `TIMEZONE` (e.g. `Asia/Jakarta`, `Asia/Makassar`).
 
 **Control and operational safety**
@@ -70,37 +72,43 @@ That's it: the bot sends `gm` and `gn` to the target channels at the configured 
 **Code quality**
 
 - Code split by module (settings, storage, messages, scheduler, commands, client).
-- Behavior tests with **pytest**, lint and formatting with **Ruff**.
+- Code style checks with **Ruff**; pytest is available for regression tests contributed to the project.
 - Production-ready with a **Dockerfile** and **Procfile**.
+
+## Architecture at a glance
+
+![GM/GN Bot workflow](docs/architecture.en.svg)
+
+Commands are accepted only in the monitor channel. Targets and schedules are stored in `/data/config.json`, and the worker sends GM/GN messages using the configured timezone. A Railway Volume is required to retain configuration when the container is recreated.
 
 ## Usage
 
 > [!NOTE]
-> The bot replies in Indonesian. The screenshots below show an English translation of those replies; the commands themselves are the same.
+> The bot replies in Indonesian. Images below are English-labeled documentation mockups using fictional sample values; real bot replies will differ.
 
 **1. Deploy and set environment variables.** Follow [Deploy to Railway](#deploy-to-railway). Once running, the bot posts its status in the monitor channel.
 
-![Environment variables on Railway](docs/screenshots/railway.svg)
+![Environment variables on Railway](docs/screenshots/en/railway.svg)
 
 **2. List the commands** with `!menu` in the monitor channel.
 
-![Help menu](docs/screenshots/menu.svg)
+![Help menu](docs/screenshots/en/menu.svg)
 
 **3. Add target channels** with `!set` followed by one or more channel IDs, separated by spaces.
 
-![Set targets](docs/screenshots/set.svg)
+![Set targets](docs/screenshots/en/set.svg)
 
 **4. Set the send times** with `!time`. GM and GN times go in a single command.
 
-![Set schedule](docs/screenshots/time.svg)
+![Set schedule](docs/screenshots/en/time.svg)
 
 **5. Check the configuration** with `!list` to see the GM and GN times, the target count, and the list of active target IDs.
 
-![Configuration list](docs/screenshots/list.svg)
+![Configuration list](docs/screenshots/en/list.svg)
 
 **6. The bot sends messages** to the target channels at the configured times.
 
-![Sent messages](docs/screenshots/result.svg)
+![Sent messages](docs/screenshots/en/result.svg)
 
 **7. Remove a target** any time with `!stop 1234567890`.
 
@@ -139,9 +147,7 @@ A full example is in `.env.example`.
 
 Targets and schedule are stored in `/data/config.json`. Make sure `/data` is a **Railway Volume** so the file survives container rebuilds.
 
-## Privacy and security
-
-![Token security and Discord policy](docs/security.svg)
+## Privacy
 
 - The token is stored **only** in Railway environment variables. Never commit a token; `.env.example` only contains placeholders.
 - The bot exposes no web service, uses no database, and has no analytics. The only stored data is `config.json`, containing target channel IDs and the schedule.
@@ -178,14 +184,17 @@ set TIMEZONE=Asia/Jakarta
 python -m gmgn_bot
 ```
 
-### Tests and lint
+### Lint and formatting
+
+Run style checks from the repository root:
 
 ```
 pip install -r requirements-dev.txt
-pytest
 ruff check .
 ruff format --check .
 ```
+
+Pytest is included for contributors who add regression tests.
 
 ### Run with Docker
 
