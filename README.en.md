@@ -5,11 +5,12 @@
 # GM/GN Bot
 
 <p>
-  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3.10+">
-  <img src="https://img.shields.io/badge/Discord-Automation-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord automation">
-  <img src="https://img.shields.io/badge/Deploy-Railway-0B0D0E?style=flat&logo=railway&logoColor=white" alt="Railway">
-  <img src="https://img.shields.io/badge/Container-Docker-2496ED?style=flat&logo=docker&logoColor=white" alt="Docker">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2DAD87?style=flat" alt="MIT License"></a>
+  <a href="https://github.com/DURIAN-ORGANISASI/gmgn-bot/actions/workflows/quality.yml"><img alt="Quality checks" src="https://img.shields.io/github/actions/workflow/status/DURIAN-ORGANISASI/gmgn-bot/quality.yml?branch=main&amp;label=quality%20checks&amp;logo=githubactions&amp;logoColor=white"></a>
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&amp;logo=python&amp;logoColor=white" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/Discord-Automation-5865F2?style=flat&amp;logo=discord&amp;logoColor=white" alt="Discord automation">
+  <img src="https://img.shields.io/badge/Deploy-Railway-0B0D0E?style=flat&amp;logo=railway&amp;logoColor=white" alt="Railway">
+  <img src="https://img.shields.io/badge/Container-Docker-2496ED?style=flat&amp;logo=docker&amp;logoColor=white" alt="Docker">
+  <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/DURIAN-ORGANISASI/gmgn-bot?label=license"></a>
 </p>
 
 <p><a href="README.md">🇮🇩 Bahasa Indonesia</a> · <a href="README.en.md">🇬🇧 English</a></p>
@@ -24,7 +25,10 @@ Manage targets and send times through chat commands, with persistent configurati
   <a href="#usage">Usage guide</a> ·
   <a href="#input-format">Commands</a> ·
   <a href="#privacy">Privacy &amp; security</a> ·
-  <a href="#development">Development</a>
+  <a href="#development">Development</a> ·
+  <a href="#sources-attribution-and-licensing">Sources &amp; license</a> ·
+  <a href="#contributing">Contributing</a> ·
+  <a href="#security-policy">Security</a>
 </p>
 
 </div>
@@ -36,7 +40,7 @@ Manage targets and send times through chat commands, with persistent configurati
 <p align="center"><sub>SVG illustrations for documentation — not live screenshots from Discord or Railway.</sub></p>
 
 > [!WARNING]
-> **Important — Discord Terms of Service risk.** This repository uses a user-account token through `discord.py-self` (self-bot). Automating a user account violates Discord's Terms of Service and may lead to account restrictions or bans. Do not use your main account or share the token. For an official-bot-based approach, see [GM/GN n8n Agent](https://github.com/DURIAN-ORGANISASI/gmgn-n8n-agent); this repository's code does not itself use the official bot API.
+> **Important — Discord does not permit self-bots.** This repository uses a user-account token through `discord.py-self`, not an official bot application. This use violates Discord's Terms of Service and carries a risk of account restriction or ban. The deployment steps below describe the existing implementation; they do not make it compliant with Discord policy. For an official-bot-based approach, see [GM/GN n8n Agent](https://github.com/DURIAN-ORGANISASI/gmgn-n8n-agent). Do not use your main account or share the token.
 
 ## Try it now
 
@@ -73,7 +77,7 @@ That's it: the bot sends `gm` and `gn` to the target channels at the configured 
 
 - Code split by module (settings, storage, messages, scheduler, commands, client).
 - Code style checks with **Ruff**; pytest is available for regression tests contributed to the project.
-- Production-ready with a **Dockerfile** and **Procfile**.
+- Deployment packaging is provided through a **Dockerfile** and **Procfile**; this does not mean Discord supports self-bot use.
 
 ## Architecture at a glance
 
@@ -255,23 +259,32 @@ Procfile                Worker start command
 - **Without a Volume, the configuration is lost** when the container is recreated.
 - **Account risk**: automated sending through a user account can trigger Discord restrictions, and some servers forbid automated messages. Follow each server's rules.
 
+## Sources, attribution, and licensing
+
+### Technical references
+
+- [Discord Developer Documentation](https://discord.com/developers/docs) for official applications, bots, events, and permissions.
+- [Discord Terms of Service](https://discord.com/terms) and [Discord's automated user account/self-bot policy](https://support.discord.com/hc/en-us/articles/115002192352-Automated-User-Accounts-Self-Bots). These references matter because the current implementation uses a user-account token.
+- [Python documentation](https://docs.python.org/3/), [pytz](https://github.com/stub42/pytz), and [discord.py-self at the pinned commit](https://github.com/dolfies/discord.py-self/tree/2ba64a9a997e151a9c259984e0a179b1fdf4aff4).
+- [Railway Volumes](https://docs.railway.com/reference/volumes), [Railway Variables](https://docs.railway.com/guides/variables), and [Docker](https://docs.docker.com/).
+- The full source list and attribution notes are in [`docs/SOURCES.md`](docs/SOURCES.md).
+
+### Artwork attribution and trademarks
+
+The SVGs in `docs/` are documentation mockups, not live screenshots from Discord or Railway. Discord, Railway, Docker, Python, and other third-party names and marks belong to their respective owners. GM/GN Bot is independent and is not supported or sponsored by Discord Inc.
+
+### MIT scope
+
+This repository uses the [MIT License](LICENSE). The root `LICENSE` file remains authoritative for the license text and copyright notice. MIT applies to covered project material; it does not automatically relicense third-party dependencies, external services, trademarks, or platform terms. The MIT license does not make self-bot use permitted by Discord.
+
 ## Contributing
 
-Contributions are welcome.
+Contributions are welcome through Issues and Pull Requests. Follow [`CONTRIBUTING.md`](CONTRIBUTING.md), keep the Indonesian and English READMEs consistent, and never include tokens, cookies, production channel IDs, or sensitive logs. Automated checks are linked through the **Quality checks** badge at the top.
 
-1. **Fork** this repo and create a new branch, e.g. `feature/your-feature`.
-2. Install dev dependencies: `pip install -r requirements-dev.txt`.
-3. Change code in `src/gmgn_bot/` and **add or update tests** in `tests/`.
-4. Make sure everything passes before opening a PR:
+## Security policy
 
-   ```
-   pytest
-   ruff check .
-   ruff format --check .
-   ```
+Read [`SECURITY.md`](SECURITY.md) before reporting a security concern. Keep tokens secret, never commit a real `.env` file, and redact sensitive information from logs before sharing them. The current implementation uses a self-bot and carries account and platform-compliance risk; for supported use, prefer an official Discord bot with the minimum required permissions.
 
-5. Open a **Pull Request** with a short description of what changed and why.
+## License
 
-For bugs or feature requests, open an **Issue** with reproduction steps and logs (without tokens).
-
-This project is not affiliated with Discord Inc. Released under the [MIT](LICENSE) license.
+Released under the [MIT License](LICENSE). Third-party licenses and platform terms apply separately.
