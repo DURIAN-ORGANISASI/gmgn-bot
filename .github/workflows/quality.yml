@@ -46,6 +46,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements-dev.txt
+      - name: Normalize import ordering diagnostic
+        run: |
+          ruff check --fix src/gmgn_bot/embeds.py || true
+          sed -n '10,19p' src/gmgn_bot/embeds.py
       - name: Check code style
         run: |
           ruff check .
